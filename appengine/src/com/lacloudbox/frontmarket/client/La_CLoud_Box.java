@@ -30,7 +30,7 @@ public class La_CLoud_Box implements EntryPoint
 		RootPanel.get("sendButtonContainer").add(this.sendButton);
 		RootPanel.get("errorLabelContainer").add(this.errorLabel);
 
-		this.nameField.setText("YourBox-1234");
+		this.nameField.setText("BoxName");
 		this.nameField.setFocus(true);
 		this.nameField.selectAll();
 
