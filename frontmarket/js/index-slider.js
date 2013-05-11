@@ -233,9 +233,9 @@ $(document).ready(function () {
         }, 800)
     }
     function c() {
-        $("#feature_slider").addClass("disabled").append('<ul id="pagination" /><a href="" id="slide-left" /><a href="" id="slide-right" />');
+        $("#feature_slider").addClass("disabled").append('<ul id="pagination" />');
         $("#feature_slider article").each(function () {
-            $("#pagination").append('<li><a href="#' + $(this).attr("id") + '">' + $(this).index() + "</a></li>")
+           // $("#pagination").append('<li><a href="#' + $(this).attr("id") + '">' + $(this).index() + "</a></li>")
         });
         $("#pagination li:first").addClass("active");
         $("#pagination").css({
@@ -361,7 +361,7 @@ $(document).ready(function () {
             return false
         });
         var f = setInterval(function () {
-            i()
+          //  i()
         }, 5000)
     }
     c();
