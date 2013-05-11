@@ -171,3 +171,13 @@ node_modules
 # sublimetext project files
 *.sublime-project
 *.sublime-workspace
+
+
+#############
+## GWT
+#############
+appengine/gwt-unitCache
+appengine/war/WEB-INF/classes
+appengine/war/la_cloud_box/*
+appengine/war/WEB-INF/appengine-generated
+appengine/war/WEB-INF/deploy
