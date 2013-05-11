@@ -11,6 +11,7 @@
     "node" : "0.6.19"
   },
   "dependencies": {
+    "express" : "2.x.x"
   },
   "keywords": [ "cloud", "backup"],
   "repository": { "type": "git", "url": "http://github.com/hexapode/cloudbox.git" }
