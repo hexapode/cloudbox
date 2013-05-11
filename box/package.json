@@ -1,0 +1,17 @@
+{
+  "name": "cloudbox-box",
+  "version": "0.0.1",
+  "contributors": [
+    "Adrien Atzert <adrien@atzert.net>",
+    "Pierre-Loic Doulcet <doulcet@gmail.com>"
+  ],
+  "description": "CloudBox",
+  "main": "./server.js",
+  "engines": {
+    "node" : "0.6.19"
+  },
+  "dependencies": {
+  },
+  "keywords": [ "cloud", "backup"],
+  "repository": { "type": "git", "url": "http://github.com/hexapode/cloudbox.git" }
+}
