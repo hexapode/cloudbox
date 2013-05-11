@@ -1,8 +1,20 @@
-var http = require('http');
+var app = require('express').createServer();
 
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World\n');
-}).listen(1337, '127.0.0.1');
+app.configure(function(){
+    app.set('discovery url', 'https://lcbahp.appspot.com/la_cloud_box/updateBoxIp');
+});
 
-console.log('Server running at http://127.0.0.1:1337/');
+app.get('/', function(req, res){
+  res.send('hello world');
+});
+
+app.use('/discovery', require('./services/discovery').application);
+
+
+
+// var account_google = require('./services/google/account');
+app.use('/google/gmail', require('./services/google/gmail').application);
+// app.use('/google/drive', account_google, require('./services/google/drive'));
+
+
+app.listen(80);
