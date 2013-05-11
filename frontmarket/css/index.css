@@ -305,7 +305,7 @@
 
 #in_pricing{
     margin-top: 30px;
-    margin-bottom: 100px;
+    margin-bottom: 30px;
 }
 #in_pricing .head h6{
     font-size: 18px;
@@ -358,7 +358,7 @@
     font-size: 15px;
 }
 #in_pricing .plan .features{
-    margin-top: 30px;
+    margin-top: 0px;
 }
 #in_pricing .plan .features p{
     color: #838385;
