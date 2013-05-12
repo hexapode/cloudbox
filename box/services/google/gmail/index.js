@@ -26,6 +26,7 @@ function verifyAccount(username, password, next) {
 	});
 }
 
+
 function getAccountSettingsPath (username) {
 	var accounts_path = app.set('google gmail data path');
 	var account_path = accounts_path+'/'+username;
@@ -55,8 +56,13 @@ function getAccountSettings (username, next) {
 	});
 }
 
+function getAccounts () {
+	var accounts_path = app.set('google gmail data path');
 
-app.get('/', function (req, res, next) {
+	return _fs.readdirSync(accounts_path);
+}
+
+app.get('/', function (req, res) {
 	res.send('google/gmail root');
 });
 
@@ -80,7 +86,9 @@ app.get('/account/:username/backup', function (req, res) {
 
 
 app.get('/create', function (req, res) {
-	res.render('google-gmail-create');
+	res.render('google-gmail-create', {
+		accounts: getAccounts()
+	});
 });
 
 
@@ -96,17 +104,23 @@ app.post('/create', _express.bodyParser(), function (req, res, next) {
 
 	verifyAccount(req.body.username, req.body.password, function (error) {
 		if (error) {
-			res.render('google-gmail-create', { errors: [
-				'Username or/and Password invalid.'
-			] });
+			res.render('google-gmail-create', {
+				accounts: getAccounts(),
+				errors: [
+					'Username or/and Password invalid.'
+				]
+			});
 			return;
 		}
 
 		createAccountSettings(settings, function(error) {
 			if (error) {
-				res.render('google-gmail-create', { errors: [
-				'Impossible de creer le compte.'
-				] });
+				res.render('google-gmail-create', {
+					accounts: getAccounts(),
+					errors: [
+						'Impossible de creer le compte.'
+					]
+				});
 				return;
 			}
 

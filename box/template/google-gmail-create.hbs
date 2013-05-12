@@ -63,15 +63,19 @@
             <div class="section_header">
                 <h3>Your Gmail Accounts</h3>
             </div>
+
+            {{#each accounts}}
 			<div class="row">
-				<div class="span9"><strong>known_by_familly@gmail.com</strong></div>
-				<div class="span3"><a class="btn" href="#">Restore my data</a> <a class="btn" href="#">View data</a></div>
+				<div class="span5"><strong>{{this}}</strong></div>
+				<div class="span7">
+                    <a class="btn btn-small" href="#"><i class="icon-download"></i> Download my data</a>
+                    <a class="btn btn-small btn-primary" href="/google/gmail/account/{{this}}/view"><i class="icon-eye-open"></i> View my data</a>
+                    <a class="btn btn-small" href="#"><i class="icon-wrench"></i> Restore my data</a>
+                    <button class="btn btn-small" data-action="/google/gmail/account/{{this}}/backup"><i class="icon-hdd"></i> Backup my data</button>
+                </div>
 			</div>
-			<br />
-			<div class="row">
-				<div class="span9"><strong>foobar@gmail.com</strong></div>
-				<div class="span3"><a class="btn" href="#">Restore my data</a> <a class="btn" href="#">View data</a></div>
-			</div>
+            {{/each}}
+
 			<br />
             <div class="section_header">
                 <h3>Add A New Gmail Account</h3>
