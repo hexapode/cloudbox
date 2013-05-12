@@ -65,89 +65,36 @@
             </div>
 			<div class="row">
 				<div class="span9"><strong>known_by_familly@gmail.com</strong></div>
-				<div class="form span3"><form><input type="submit" value="Restore my data"> <input type="submit" value="View data"></form></div>
+				<div class="span3"><a class="btn" href="#">Restore my data</a> <a class="btn" href="#">View data</a></div>
 			</div>
 			<br />
 			<div class="row">
 				<div class="span9"><strong>foobar@gmail.com</strong></div>
-				<div class="form span3"><form><input type="submit" value="Restore my data"> <input type="submit" value="View data"></form></div>
+				<div class="span3"><a class="btn" href="#">Restore my data</a> <a class="btn" href="#">View data</a></div>
 			</div>
 			<br />
             <div class="section_header">
                 <h3>Add A New Gmail Account</h3>
             </div>
-			<div class="form">
-				<form>
-					<input type="text" placeholder="Email">
-					<input type="text" placeholder="Password">
-					<input type="text" placeholder="Confirm Password">
-					<input type="submit" value="sign in">
+			<div>
+				<form class="form-inline {{#if errors}}error{{/if}}" action="/google/gmail/create" method="post">
+					<input name="username" type="text" placeholder="Email" />
+					<input name="password" type="password" placeholder="Password" />
+                    <button type="submit" class="btn">Add</button>
+                    {{#each errors}}
+                        <span class="help-inline">{{this}}</span>
+                    {{/each}}
 				</form>
 			</div>
 
-			<br />
-   			<br />
-   			<br />
-   			<br />
-<!--			<div class="row contact">
-                <p>A Paragraph Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at felis nunc. Mauris vel felis est, ac rhoncus felis. Nulla ultricies ultrices pulvinar. Cras scelerisque, nisi eleifend rhoncus placerat, nunc ligula molestie magna, vel porttitor justo eros et libero. Etiam porta massa vel nunc placerat viverra. Duis ultrices, augue a dapibus laoreet, nisl lectus bibendum ligula, non mattis diam purus id leo. Sed suscipit rutrum quam quis accumsan. Pellentesque fringilla volutpat aliquam.</p>
+<br />
+<br />
+<br />
+<br />
 
-                <form>
-                    <div class="row form">
-                        <div class="span6 box">
-                            <input class="name" type="text" placeholder="Name">
-                            <input class="mail" type="text" placeholder="Email">
-                            <input class="phone" type="text" placeholder="Phone">
-                        </div>
-                        <div class="span6 box box_r">
-                            <textarea placeholder="Type a message here..."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="row submit">
-                        <div class="span5 box">
-                            <label class="checkbox">
-                                <input type="checkbox"> Sign up for newsletter
-                            </label>
-                        </div>
-                        <div class="span3 right">
-                            <input type="submit" value="Send your message">
-                        </div>
-                    </div>
-                </form>
-            </div>
-			-->
         </div>
 	</div>
 
-	<!--			<div class="row contact">
-                <p>A Paragraph Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at felis nunc. Mauris vel felis est, ac rhoncus felis. Nulla ultricies ultrices pulvinar. Cras scelerisque, nisi eleifend rhoncus placerat, nunc ligula molestie magna, vel porttitor justo eros et libero. Etiam porta massa vel nunc placerat viverra. Duis ultrices, augue a dapibus laoreet, nisl lectus bibendum ligula, non mattis diam purus id leo. Sed suscipit rutrum quam quis accumsan. Pellentesque fringilla volutpat aliquam.</p>
-
-                <form>
-                    <div class="row form">
-                        <div class="span6 box">
-                            <input class="name" type="text" placeholder="Name">
-                            <input class="mail" type="text" placeholder="Email">
-                            <input class="phone" type="text" placeholder="Phone">
-                        </div>
-                        <div class="span6 box box_r">
-                            <textarea placeholder="Type a message here..."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="row submit">
-                        <div class="span5 box">
-                            <label class="checkbox">
-                                <input type="checkbox"> Sign up for newsletter
-                            </label>
-                        </div>
-                        <div class="span3 right">
-                            <input type="submit" value="Send your message">
-                        </div>
-                    </div>
-                </form>
-            </div>
-			-->
         </div>
 	</div>
 
@@ -174,8 +121,7 @@
 	
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/theme.js"></script>	
-	
+    <script src="/js/theme.js"></script>
 	
   </body>
 </html>

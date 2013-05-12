@@ -8,6 +8,9 @@ app.configure(function(){
 	app.set('discovery url', 'https://lcbahp.appspot.com/la_cloud_box/updateBoxIp');
 	app.set('discovery interface', process.env.CLOUDBOX_INTERFACE || 'eth0');
 
+	app.set('data path', __dirname + '/data');
+	app.set('google gmail data path', app.set('data path') + '/google/gmail');
+
 	app.set('view options', {
 		layout: false
 	});
