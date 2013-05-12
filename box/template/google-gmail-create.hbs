@@ -71,7 +71,7 @@
                     <a class="btn btn-small" href="#"><i class="icon-download"></i> Download my data</a>
                     <a class="btn btn-small btn-primary" href="/google/gmail/account/{{this}}/view"><i class="icon-eye-open"></i> View my data</a>
                     <a class="btn btn-small" href="#"><i class="icon-wrench"></i> Restore my data</a>
-                    <button class="btn btn-small" data-action="/google/gmail/account/{{this}}/backup"><i class="icon-hdd"></i> Backup my data</button>
+                    <a class="btn btn-small" href="#" data-action="/google/gmail/account/{{this}}/backup"><i class="icon-hdd"></i> Backup my data</a>
                 </div>
 			</div>
             {{/each}}
@@ -126,6 +126,11 @@
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/theme.js"></script>
-	
+    <script type="application/javascript">
+        $('a[data-action]').click(function () {
+            $.get($(this).attr('data-action'), function(data) {
+            });
+        });
+    </script>
   </body>
 </html>
