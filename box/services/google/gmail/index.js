@@ -96,7 +96,6 @@ app.get('/account/:username/backup/progress', function (req, res, next) {
 app.get('/account/:username/view', function (req, res, next) {
 	getMailTable(req.params.username, function (error, table) {
 		if (error) { return next(error); }
-		console.log(table);
 		res.render('google-gmail-view', {username: req.params.username, mails: table});
 	});
 	
