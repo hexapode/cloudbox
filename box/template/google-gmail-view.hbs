@@ -64,15 +64,18 @@
                 <h3>Mails stored for {{username}}</h3>
             </div>
 
-            {{#each mails}}
-			<div class="row">
-				<div class="span4"><strong>{{this.subject}}</strong></div>
-                <div class="span4">{{this.date}}</div>
-				<a class="btn btn-small" href="#"><i class="icon-eye-open"></i> View</a>
-                <a class="btn btn-small" href="#"><i class="icon-download"></i> Download</a>
-			</div>
-            {{/each}}
-
+            {{#if mails}}
+                {{#each mails}}
+    			<div class="row">
+    				<div class="span4"><strong>{{this.subject}}</strong></div>
+                    <div class="span4">{{this.date}}</div>
+    				<a class="btn btn-small" href="#"><i class="icon-eye-open"></i> View</a>
+                    <a class="btn btn-small" href="#"><i class="icon-download"></i> Download</a>
+    			</div>
+                {{/each}}
+            {{else}}
+                <h4>No backup stored.</h4>
+            {{/if}}
         </div>
 	</div>
 

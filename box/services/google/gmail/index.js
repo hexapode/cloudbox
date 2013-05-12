@@ -70,6 +70,9 @@ function getAccounts () {
 function getMailTable(username, next) {
 	var tablePath = getAccountPath(username) + '/table.js';
 
+	if (!_path.existsSync(tablePath))
+		return next(null, null);
+
 	_fs.readFile(tablePath, 'utf8', function (error, data) {
 		if (error) { return next(error); }
 		return next(null, JSON.parse(data));
