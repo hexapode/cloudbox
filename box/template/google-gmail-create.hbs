@@ -131,11 +131,13 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/theme.js"></script>
     <script type="application/javascript">
-        $('a[data-action]').click(function () {
+        var toogle_backup = function () {
             var interval = null;
             var $this = $(this);
             var $progress = $this.parents('div.row').find('div.progress');
+            $progress.find('.bar').css('width', '0%');
             $progress.show();
+
             $this.attr('disabled', 'disabled');
             $this.off('click');
             $.get($this.attr('data-action'), function(data) {
@@ -145,12 +147,17 @@
                     if (data.progress > 0.98) {
                         $progress.hide();
                         $this.attr('disabled', null);
+                        $this.on('click', toogle_backup);
                         window.clearInterval(interval);
+                        
                     }
+                    
                     $progress.find('.bar').css('width', (data.progress * 100) + '%');
+
                 }, 100);
             });
-        });
+        }
+        $('a[data-action]').click(toogle_backup);
     </script>
   </body>
 </html>
