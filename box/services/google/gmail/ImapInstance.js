@@ -3,7 +3,11 @@ var	imap = require('imap');
 var fs = require('fs')
 
 
-
+var gBackupProgress = {
+			username: null,
+			nbPath: 0,
+			progressArray: new Array()
+};
 
 function PrintError(err)
 {
@@ -55,7 +59,7 @@ function SaveBox(self, path, box, next)
 						});
 						msg.on('end', function() {
 							fileStream.end();
-							self.backupProgress[self.backupProgress.length - 1].nbMailSaved += 1;
+							gBackupProgress.progressArray[gBackupProgress.progressArray.length - 1].nbMailSaved += 1;
 							self.table.push(summary);
 						});
 					});
@@ -76,7 +80,7 @@ function SaveAllBoxes(self, pathArray, next)
 	self.imapInstance.openBox(pathBox, function(err, box) {
 		if (!PrintError(err))
 		{
-			self.backupProgress.push({path:pathBox, nbMailTotal: box.messages.total, nbMailSaved: 0});
+			gBackupProgress.progressArray.push({path:pathBox, nbMailTotal: box.messages.total, nbMailSaved: 0});
 			SaveBox(self, pathBox, box, function (){
 				self.imapInstance.closeBox(function () {
 					SaveAllBoxes(self, pathArray, next);
@@ -98,13 +102,16 @@ function SaveTable(self)
 }
 
 
+function GetBackupProgress()
+{
+	return gBackupProgress;
+}
 
 function ImapInstance(account)
 {
 	this.account = account;
 	this.backupPath = null;
 	this.imapInstance = new imap(account);
-	this.backupProgress = new Array();
 	this.table = new Array();
 
 	this.Backup = function (path, next)
@@ -112,7 +119,11 @@ function ImapInstance(account)
 		var self = this;
 
 		this.backupPath = path;
-		this.backupProgress = new Array();
+
+		gBackupProgress.username = this.account.user;
+		gBackupProgress.nbPath = 0;
+		gBackupProgress.progressArray = new Array();
+
 		this.table = new Array();
 		this.imapInstance.connect(function(err) {
 			if (PrintError(err)) return next(); 
@@ -126,6 +137,7 @@ function ImapInstance(account)
 				
 				var pathArray = new Array();
 				BuildPathArray(boxes, '', pathArray);
+				gBackupProgress.nbPath = pathArray.length;
 				SaveAllBoxes(self, pathArray, function() {
 					self.imapInstance.logout();
 					SaveTable(self);
@@ -137,11 +149,7 @@ function ImapInstance(account)
 
 	};
 
-	this.GetBackupProgress = function ()
-	{
-		return this.backupProgress;
-	}
 }
 
 
-module.exports = ImapInstance;
+module.exports = {Instance: ImapInstance, progress: gBackupProgress};

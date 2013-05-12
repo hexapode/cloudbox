@@ -71,6 +71,18 @@ app.get('/', function (req, res) {
 	res.send('google/gmail root');
 });
 
+app.get('/account/:username/backup/progress', function (req, res, next) {
+	var nbPath = _imapInstance.progress.progressArray.length;
+	var progress = 0;
+	if (nbPath)
+	{
+		var subProcess = 0;
+		if (_imapInstance.progress.progressArray[nbPath - 1].nbMailTotal)
+			subProcess = _imapInstance.progress.progressArray[nbPath - 1].nbMailSaved / _imapInstance.progress.progressArray[nbPath - 1].nbMailTotal;
+		progress = (nbPath + subProcess) / _imapInstance.progress.nbPath;
+	}
+	res.send(JSON.stringify({username: _imapInstance.progress.username, progress: progress}));
+});
 
 app.get('/account/:username/backup', function (req, res, next) {
 	getAccountSettings(req.params.username, function (error, settings) {
@@ -83,7 +95,7 @@ app.get('/account/:username/backup', function (req, res, next) {
 			secure: true
 		};
 
-		var instance = new _imapInstance(account);
+		var instance = new _imapInstance.Instance(account);
 
 		instance.Backup(getAccountPath(settings.username), function () {res.send('Backup done! or not!');});
 	});
