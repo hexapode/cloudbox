@@ -11,7 +11,7 @@ require_once ("paypalfunctions.php");
 //' earlier in a session variable 
 //' by the shopping cart page
 //'------------------------------------
-$_SESSION["Payment_Amount"] = 249;
+$_SESSION["Payment_Amount"] = 49;
 $paymentAmount = $_SESSION["Payment_Amount"];
 
 //'------------------------------------
