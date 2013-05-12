@@ -67,6 +67,15 @@ function getAccounts () {
 	return _fs.readdirSync(accounts_path);
 }
 
+function getMailTable(username, next) {
+	var tablePath = getAccountPath(username) + '/table.js';
+
+	_fs.readFile(tablePath, 'utf8', function (error, data) {
+		if (error) { return next(error); }
+		return next(null, JSON.parse(data));
+	});
+}
+
 app.get('/', function (req, res) {
 	res.send('google/gmail root');
 });
@@ -82,6 +91,15 @@ app.get('/account/:username/backup/progress', function (req, res, next) {
 		progress = (nbPath + subProcess) / _imapInstance.progress.nbPath;
 	}
 	res.send(JSON.stringify({username: _imapInstance.progress.username, progress: progress}));
+});
+
+app.get('/account/:username/view', function (req, res, next) {
+	getMailTable(req.params.username, function (error, table) {
+		if (error) { return next(error); }
+		console.log(table);
+		res.render('google-gmail-view', {username: req.params.username, mails: table});
+	});
+	
 });
 
 app.get('/account/:username/backup', function (req, res, next) {
