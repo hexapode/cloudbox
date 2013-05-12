@@ -3,7 +3,7 @@ var	imap = require('imap');
 var fs = require('fs')
 
 
-var BackupProgress = new Array();
+
 
 function PrintError(err)
 {
@@ -32,23 +32,37 @@ function SaveBox(self, path, box, next)
 		if (PrintError(err)) return next();
 		if (results.length == 0) return next();
 		self.imapInstance.fetch(results,
-	      	{	headers: { parse: false },
-	        	body: true,
-	        	cb: function(fetch) {
-	          		fetch.on('message', function(msg) {
-	            		fileStream = fs.createWriteStream(__dirname + '/' + self.account.user + '/msg-' + msg.seqno + '-body.txt');
-	            		msg.on('data', function(chunk) {
-	              			fileStream.write(chunk);
-	            		});
-	            		msg.on('end', function() {
-	              			fileStream.end();
-	              			BackupProgress[BackupProgress.length - 1].nbMailSaved += 1;
-	            		});
-	          		});
-	          	}
-      		}, function(err) {
-      			next();
-      	});
+			{	headers: { parse: ['from', 'to', 'subject', 'date'] },
+				body: true,
+				cb: function(fetch) {
+					var summary = null;
+					
+					fetch.on('message', function(msg) {
+
+						fileStream = fs.createWriteStream(self.backupPath + '/msg-' + msg.seqno + '-body.txt');
+						msg.on('data', function(chunk) {
+							fileStream.write(chunk);
+						});
+						msg.on('headers', function(header) {
+							summary = {
+								path: path,
+								from: header.from,
+								to: header.to,
+								subject: header.subject,
+								date: header.date,
+								seqno: msg.seqno,
+							};
+						});
+						msg.on('end', function() {
+							fileStream.end();
+							self.backupProgress[self.backupProgress.length - 1].nbMailSaved += 1;
+							self.table.push(summary);
+						});
+					});
+				}
+			}, function(err) {
+				next();
+		});
 		
 	});
 	
@@ -62,7 +76,7 @@ function SaveAllBoxes(self, pathArray, next)
 	self.imapInstance.openBox(pathBox, function(err, box) {
 		if (!PrintError(err))
 		{
-			BackupProgress.push({path:pathBox, nbMailTotal: box.messages.total, nbMailSaved: 0});
+			self.backupProgress.push({path:pathBox, nbMailTotal: box.messages.total, nbMailSaved: 0});
 			SaveBox(self, pathBox, box, function (){
 				self.imapInstance.closeBox(function () {
 					SaveAllBoxes(self, pathArray, next);
@@ -78,20 +92,28 @@ function SaveAllBoxes(self, pathArray, next)
 }
 
 
-
+function SaveTable(self)
+{
+	fs.writeFileSync(self.backupPath + '/table.js', JSON.stringify(self.table), 'utf8');
+}
 
 
 
 function ImapInstance(account)
 {
 	this.account = account;
- 	this.imapInstance = new imap(account);
+	this.backupPath = null;
+	this.imapInstance = new imap(account);
+	this.backupProgress = new Array();
+	this.table = new Array();
 
-	this.Backup = function (next)
+	this.Backup = function (path, next)
 	{
 		var self = this;
 
-		BackupProgress = new Array();
+		this.backupPath = path;
+		this.backupProgress = new Array();
+		this.table = new Array();
 		this.imapInstance.connect(function(err) {
 			if (PrintError(err)) return next(); 
 
@@ -106,6 +128,7 @@ function ImapInstance(account)
 				BuildPathArray(boxes, '', pathArray);
 				SaveAllBoxes(self, pathArray, function() {
 					self.imapInstance.logout();
+					SaveTable(self);
 					next();
 				});
 
@@ -116,7 +139,7 @@ function ImapInstance(account)
 
 	this.GetBackupProgress = function ()
 	{
-		return BackupProgress;
+		return this.backupProgress;
 	}
 }
 

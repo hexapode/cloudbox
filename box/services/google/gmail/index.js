@@ -33,6 +33,11 @@ function getAccountSettingsPath (username) {
 	return account_path+'/settings.json';
 }
 
+function getAccountPath (username) {
+	var accounts_path = app.set('google gmail data path');
+	return accounts_path+'/'+username;
+}
+
 function createAccountSettings (settings, next) {
 	var settings_path = getAccountSettingsPath(settings.username);
 
@@ -67,7 +72,7 @@ app.get('/', function (req, res) {
 });
 
 
-app.get('/account/:username/backup', function (req, res) {
+app.get('/account/:username/backup', function (req, res, next) {
 	getAccountSettings(req.params.username, function (error, settings) {
 		if (error) { return next(error); }
 		var account = {
@@ -80,7 +85,7 @@ app.get('/account/:username/backup', function (req, res) {
 
 		var instance = new _imapInstance(account);
 
-		instance.Backup(function () {res.send('Backup done! or not!');});
+		instance.Backup(getAccountPath(settings.username), function () {res.send('Backup done! or not!');});
 	});
 });
 
