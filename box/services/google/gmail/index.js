@@ -6,6 +6,7 @@ app.get('/', function (req, res, next) {
 	res.send('google/gmail root');
 });
 
+
 app.get('/backup', function (req, res) {
 	var account = {
 		user: 'spouwny.test@gmail.com',
@@ -19,6 +20,12 @@ app.get('/backup', function (req, res) {
 
 	instance.Backup(function () {res.send('Backup done! or not!');});
 });
+
+
+app.get('/create', function (req, res) {
+	res.render('google-gmail-create');
+});
+
 
 module.exports = {
 	application: app
