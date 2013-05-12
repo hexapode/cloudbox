@@ -106,7 +106,6 @@ function ImapInstance(account)
 				BuildPathArray(boxes, '', pathArray);
 				SaveAllBoxes(self, pathArray, function() {
 					self.imapInstance.logout();
-					console.log(BackupProgress);
 					next();
 				});
 
