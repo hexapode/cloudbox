@@ -1,0 +1,10 @@
+#!/bin/sh
+
+sleep 10s
+
+curl -H 'Content-Type: application/json' -X POST -d "{\"interface\":\"$1\",\"status\":\"$2\"}" \
+  'http://127.0.0.1/discovery' >> '/home/pi/cloudbox/curl.log'
+
+echo '' >> '/home/pi/cloudbox/curl.log'
+
+date >> '/home/pi/cloudbox/curl.log'

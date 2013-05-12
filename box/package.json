@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "express" : "2.x.x",
-	"hbs" : "x"
+	"hbs" : "x",
+  "imap":"x"
   },
   "keywords": [ "cloud", "backup"],
   "repository": { "type": "git", "url": "http://github.com/hexapode/cloudbox.git" }
