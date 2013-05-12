@@ -61,18 +61,21 @@ app.get('/', function (req, res, next) {
 });
 
 
-app.get('/backup', function (req, res) {
-	var account = {
-		user: 'spouwny.test@gmail.com',
-		password: 'kitkatkodac',
-		host: 'imap.gmail.com',
-		port: 993,
-		secure: true
-	};
+app.get('/account/:username/backup', function (req, res) {
+	getAccountSettings(req.params.username, function (error, settings) {
+		if (error) { return next(error); }
+		var account = {
+			user: settings.username,
+			password: settings.password,
+			host: 'imap.gmail.com',
+			port: 993,
+			secure: true
+		};
 
-	var instance = new _imapInstance(account);
+		var instance = new _imapInstance(account);
 
-	instance.Backup(function () {res.send('Backup done! or not!');});
+		instance.Backup(function () {res.send('Backup done! or not!');});
+	});
 });
 
 
