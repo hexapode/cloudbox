@@ -66,12 +66,16 @@
 
             {{#each accounts}}
 			<div class="row">
-				<div class="span5"><strong>{{this}}</strong></div>
+				<div class="span5"><strong>{{this}}</strong>
+                    <div class="progress" style="display: none;">
+                        <div class="bar" style="width: 0%;"></div>
+                    </div>
+                </div>
 				<div class="span7">
                     <a class="btn btn-small" href="#"><i class="icon-download"></i> Download my data</a>
                     <a class="btn btn-small btn-primary" href="/google/gmail/account/{{this}}/view"><i class="icon-eye-open"></i> View my data</a>
                     <a class="btn btn-small" href="#"><i class="icon-wrench"></i> Restore my data</a>
-                    <a class="btn btn-small" href="#" data-action="/google/gmail/account/{{this}}/backup"><i class="icon-hdd"></i> Backup my data</a>
+                    <a class="btn btn-small" href="#" data-action="/google/gmail/account/{{this}}/backup" data-progress="/google/gmail/account/{{this}}/backup/progress"><i class="icon-hdd"></i> Backup my data</a>
                 </div>
 			</div>
             {{/each}}
@@ -128,7 +132,23 @@
     <script src="/js/theme.js"></script>
     <script type="application/javascript">
         $('a[data-action]').click(function () {
-            $.get($(this).attr('data-action'), function(data) {
+            var interval = null;
+            var $this = $(this);
+            var $progress = $this.parents('div.row').find('div.progress');
+            $progress.show();
+            $this.attr('disabled', 'disabled');
+            $this.off('click');
+            $.get($this.attr('data-action'), function(data) {
+            });
+            interval = window.setInterval(function( ) {
+                $.getJSON($this.attr('data-progress'), function(data) {
+                    if (data.progress > 0.98) {
+                        $progress.hide();
+                        $this.attr('disabled', null);
+                        window.clearInterval(interval);
+                    }
+                    $progress.find('.bar').css('width', (data.progress * 100) + '%');
+                }, 100);
             });
         });
     </script>
